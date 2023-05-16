@@ -12,12 +12,15 @@ class PredictPipeline:
         try:
             model_path = 'artifacts\model.pkl'
             preprocessor_path = 'artifacts\preprocessor.pkl'
+            feature_selector_path = 'artifacts\selector.pkl'
             model = load_object(file_path = model_path)
             preprocessor = load_object(file_path = preprocessor_path)
+            feature_selector = load_object(file_path = feature_selector_path)
             feature_engineering = FeatureEngineering()
             df_fe = feature_engineering.get_new_features(features)
             data_scaled = preprocessor.transform(df_fe)
-            preds = model.predict(data_scaled)
+            data_scaled_fe = feature_selector.transform(data_scaled)
+            preds = model.predict(data_scaled_fe)
             return preds
         except Exception as e:
             raise CustomException(e, sys)        

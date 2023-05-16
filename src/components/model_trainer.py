@@ -21,7 +21,8 @@ from src.utils import save_object
 
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path=os.path.join("artifacts","model.pkl")
+    trained_model_file_path = os.path.join("artifacts","model.pkl")
+    feature_selector_file_path = os.path.join("artifacts", "selector.pkl")
 
 class ModelTrainer:
     def __init__(self, train_array, test_array):
@@ -113,6 +114,11 @@ class ModelTrainer:
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=ensemble,
+            )
+
+            save_object(
+                file_path=self.model_trainer_config.feature_selector_file_path,
+                obj=selector,
             )
 
             predicted = ensemble.predict(X_test_selected)
